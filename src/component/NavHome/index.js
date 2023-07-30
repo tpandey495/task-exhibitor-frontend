@@ -55,6 +55,9 @@ function DrawerAppBar(props) {
             </ListItemButton>
           </ListItem>
         ))}
+         {user ? <Button onClick={() => navigate("/dashboard")} sx={{ color: 'white', ml: '35px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
+                  dashboard
+        </Button> :<PopupForm />}
       </List>
     </Box>
   );

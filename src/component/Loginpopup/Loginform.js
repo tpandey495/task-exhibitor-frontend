@@ -56,9 +56,7 @@ dispatch(logauth(payload))
 
   return (
     <>
-      <button className="open-btn" onClick={togglePopup}>
-        Login
-      </button>
+      <button className="open-btn" onClick={togglePopup}>Login</button>
       {isOpen && (
         <div className="popup">
           <div className="popup-content">
