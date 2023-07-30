@@ -1,0 +1,46 @@
+/* Testinomial */
+.testinomail{
+    margin-bottom:100px;
+    margin-top:50px;
+}
+
+.testinomail h3{
+    text-align:center;
+}
+
+.testinomail .card-wrapper{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+ }
+
+.card-wrapper .testinomail-card{
+    margin-top:100px;
+}
+
+.testinomail .testinomail-card{
+    width:281px;
+    height:280px;
+    border-radius:16px;
+    overflow:visible;
+}
+
+.testinomail .card-media1{
+    width:65px;
+    height:39px;
+    margin-left:auto;
+    margin-right:auto; 
+}
+
+.testinomail .card-media2{
+    display: block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    object-fit: cover;
+    width: 85px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top:10px;
+}
