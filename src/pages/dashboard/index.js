@@ -36,7 +36,7 @@ const Dashboard = () => {
     <div className="dashboard">
     <div className="user-welcome">
       <p className="welcome-text">Hello<span className="user-name">{capitalizeFirstLetter(userinfo?.fName)}</span></p>
-      <ResponsiveDialog />
+      <ResponsiveDialog fetchPlan={fetchPlan}/>
     </div>
     <div className="card-par">
       {

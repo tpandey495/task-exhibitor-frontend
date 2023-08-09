@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -11,104 +11,79 @@ import Stack from '@mui/material/Stack';
 import API from '../../utils/api';
 import './Card.css';
 
-const Text = styled.h5`
-
-`;
-
-
- const  ResponsiveDialog =()=> {
-  
-  const [open, setOpen] = React.useState(false);
-
-  const [plan,setPlan] = useState({
-    planName:"",desc:""
+const Text = styled.h5``;
+const ResponsiveDialog = ({ fetchPlan }) => {
+  const [open, setOpen] =useState(false);
+  const [plan, setPlan] = useState({
+    planName: "", desc: ""
   });
- 
+  const[err,setErr]=useState("");
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
-   const handleInput = (e)=>{
+  const handleInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-     setPlan({...plan, [name]:value })
-   }
-
-      const{planName,desc}=plan;
-      const payload={
-        "plan_name" : planName,
-        "desc":desc
-      }
-
-   const handleSubmit = async(e)=>{
-     e.preventDefault();
-     try{
-      function callback(flag,res){
-        setPlan({plan:"",desc:""});
+    setPlan({ ...plan, [name]: value })
+  }
+  const { planName, desc } = plan;
+  const payload = {
+    "plan_name": planName,
+    "desc": desc
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await API.createPlan(payload, (flag, res) => {
+        if(!flag){
+        setPlan({ plan: "", desc: "" });
         handleClose();
-       }
-      API.createPlan(payload,callback);
+        fetchPlan();
+        }
+        else{
+           setErr("Error in Creating Plan")
+        }
+      });
     }
-    catch(err){
-      console.log(err);
+    catch (err) {
+      setErr(err);
     }
-    
-   }
-  
-  
-return (
+  }
+  return (
     <div>
       <button className="addPlan" onClick={handleClickOpen}>Add Plan</button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        
-      >
-        <DialogTitle >
-          {"Planning"}
-        </DialogTitle>
-    <DialogContent>
-      <Box
-         component="form" onSubmit={handleSubmit} 
-        sx={{
-        '& > :not(style)': { m: 1, width: '40ch',},
-          }}>
-
-      <Text>Plan Name</Text>
-      <TextField
-       name='planName'
-       id="outlined-basic"
-       variant="outlined"
-       value={plan.plan}
-       onChange={handleInput}
-       placeholder='Plan Name'/>
-
-      <Text>Description</Text>
-      <TextField
-       name='desc'
-       id="outlined-basic"
-       variant="outlined"
-       value={plan.desc}
-       onChange={handleInput}
-       placeholder='Description'/>      
-    <Stack spacing={2} direction="row">
-      <Button style={{ padding: "12px 79px", margin:'15px 0px' }} variant="contained">Add Task Inside Your Plan</Button>
-    </Stack>
-    <DialogActions type='submit'>
-                <Button autoFocus onClick={handleClose}>
-                  Cancel
-                </Button>
-                <Button type='submit' autoFocus>
-                  Save
-                </Button>
-              </DialogActions>
-      </Box  >
-     </DialogContent>        
-    </Dialog>
+      <Dialog open={open} onClose={handleClose}>
+       {err&&<div className="err">{err}</div>}
+        <DialogTitle >{"Planning"}</DialogTitle>
+        <DialogContent>
+          <Box component="form" onSubmit={handleSubmit}
+            sx={{
+              '& > :not(style)': { m: 1, width: '40ch', },
+            }}>
+            <Text>Plan Name</Text>
+            <TextField name='planName' id="outlined-basic" variant="outlined" value={plan.plan} onChange={handleInput}
+              placeholder='Plan Name' required/>
+            <Text>Description</Text>
+            <TextField  name='desc' id="outlined-basic" variant="outlined" value={plan.desc}
+              onChange={handleInput}
+              placeholder='Description' />
+            <Stack spacing={2} direction="row">
+              <Button style={{ padding: "12px 79px", margin: '15px 0px' }} variant="contained">Add Task Inside Your Plan</Button>
+            </Stack>
+            <DialogActions type='submit'>
+              <Button autoFocus onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button type='submit' autoFocus>
+                Save
+              </Button>
+            </DialogActions>
+          </Box  >
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

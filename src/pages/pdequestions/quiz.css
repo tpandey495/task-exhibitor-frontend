@@ -74,14 +74,18 @@ margin-right:auto;
 
 /* Submit Button */
 .submit{
-    margin-top:20px;
+    margin-top:50px;
     width:100px;
     height:30px;
-    margin-left:110px;
+    margin-left:130px;
     background-color:rgba(8, 32, 243, 0.75);
     border:none;
     border-radius:5px;
     color:white;
 }
 
-
+@media only screen and (max-width: 400px) {
+    .submit{
+      margin-left:70px;
+    }
+}

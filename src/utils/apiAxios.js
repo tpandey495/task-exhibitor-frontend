@@ -12,6 +12,6 @@ export const fetchAndProcesd = (url, method, data, callback, headerData) => {
     jwtInterceoptor(options)
         .then((res) => callback(false,res.data))
         .catch(err => { 
-            console.log(err);
+            callback(true,[]);
         })
 }
