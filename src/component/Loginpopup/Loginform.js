@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const PopupForm = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [err,setErr]=useState(false);
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
