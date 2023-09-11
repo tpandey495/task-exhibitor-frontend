@@ -1,58 +1,58 @@
-import React, { useState,useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import './login.css';
-import {Navigate, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";   
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
 import { logauth } from '../../store/authSlice';
 import { Link } from 'react-router-dom';
 
 const PopupForm = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [err,setErr]=useState(false);
+  const [err, setErr] = useState(false);
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
 
-  const errRef=useRef();
-  const navigate=useNavigate();
+  const errRef = useRef();
+  const navigate = useNavigate();
   const errMsg = "";
   const [logindet, setLogin] = useState({
-    email:"",
-    password:"",
+    email: "",
+    password: "",
   });
 
-  const { isLoggedIn,user } = useSelector((state) => state.auth);
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
 
 
-const handleInput = (e)=>{
-  const name = e.target.name; 
-  const value = e.target.value;
-  setLogin({...logindet,[name]:value});
-}
-
-const{email,password}=logindet;
-const dispatch=useDispatch();
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  let payload = {
-    email: email,
-    password: password
+  const handleInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setLogin({ ...logindet, [name]: value });
   }
 
-dispatch(logauth(payload))
-  .unwrap()
-  .then(() => {
-    navigate("/dashboard");
-    window.location.reaload()
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-};
+  const { email, password } = logindet;
+  const dispatch = useDispatch();
 
- if(isLoggedIn){
-  return <Navigate to="/dashboard" />;
- }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let payload = {
+      email: email,
+      password: password
+    }
+
+    dispatch(logauth(payload))
+      .unwrap()
+      .then(() => {
+        navigate("/dashboard");
+        window.location.reaload()
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  if (isLoggedIn) {
+    return <Navigate to="/dashboard" />;
+  }
 
   return (
     <>
@@ -62,23 +62,23 @@ dispatch(logauth(payload))
           <div className="popup-content">
             <h2>Login</h2>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <form>
+            <form onSubmit={handleSubmit}>
 
               <label htmlFor="email">Email:</label>
-              <input type="email" 
-               autoComplete='off'
-               value={logindet.email}
-               onChange={handleInput}
-               name='email'
-               id='email' />
+              <input type="email"
+                autoComplete='off'
+                value={logindet.email}
+                onChange={handleInput}
+                name='email'
+                id='email' />
 
               <label htmlFor="password">Password:</label>
               <input type='password'
-               autoComplete='off' 
-               value={logindet.password}
-               onChange={handleInput}
-               name='password' 
-               id='password'/>
+                autoComplete='off'
+                value={logindet.password}
+                onChange={handleInput}
+                name='password'
+                id='password' />
 
               <a href='#' className='forget-link'>forget password?</a>
 
@@ -86,14 +86,14 @@ dispatch(logauth(payload))
               <button className='long-button'>Login with Google</button>
 
               <Link className='forget-link' to="/registration">Signup</Link>
-            <div className='button-section'>
-            <button className="close-btn" onClick={togglePopup}>
-              Close
-            </button>
-            <button type="submit" onClick={handleSubmit}>Submit</button>
-            </div> 
+              <div className='button-section'>
+                <button className="close-btn" onClick={togglePopup}>
+                  Close
+                </button>
+                <button type="submit" onClick={handleSubmit}>Submit</button>
+              </div>
             </form>
-           
+
           </div>
         </div>
       )}
