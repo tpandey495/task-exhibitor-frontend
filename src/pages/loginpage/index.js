@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link} from 'react-router-dom';
 import {Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";   
-import { logauth } from '../../store/authSlice';
+import { loginUser } from 'store/authSlice';
 
 
 const Container = styled.div`
@@ -183,11 +183,10 @@ const handleSubmit = async (e) => {
     password: password
   }
 
-dispatch(logauth(payload))
+dispatch(loginUser(payload))
   .unwrap()
   .then(() => {
     navigate("/dashboard");
-    window.location.reaload()
   })
   .catch((err) => {
     console.log(err);
@@ -239,14 +238,11 @@ dispatch(logauth(payload))
       <ButtonBox>
       <ForgetPassword >Forget Password ?</ForgetPassword>
       </ButtonBox>
-     
       <ButtonBox>
         <Button type='submit'>Login</Button>
       </ButtonBox>
-
       <SectionSecond>
         <OrWithText> <MidText>or With</MidText></OrWithText>
-
       <FbButton >
         Login With Facebook
       </FbButton>
@@ -258,8 +254,6 @@ dispatch(logauth(payload))
         <LoginButton onClick={()=>navigate("/registration")}><Link to="pages/profile">Signup</Link></LoginButton>
       </SignupSection>
       </SectionSecond>
-
-
     </Form>
     </Container>
     </>

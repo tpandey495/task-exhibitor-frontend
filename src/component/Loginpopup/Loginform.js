@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import './login.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { logauth } from '../../store/authSlice';
+import { loginUser } from '../../store/authSlice';
 import { Link } from 'react-router-dom';
 
 const PopupForm = () => {
@@ -39,11 +39,11 @@ const PopupForm = () => {
       password: password
     }
 
-    dispatch(logauth(payload))
+  await  dispatch(loginUser(payload))
       .unwrap()
       .then(() => {
-        navigate("/dashboard");
-        window.location.reaload()
+        navigate("/");
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);

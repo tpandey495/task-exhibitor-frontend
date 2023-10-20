@@ -41,5 +41,14 @@ const getUpcomingTask=(callback)=>{
 const getUserInfo=(callback)=>{
   fetchAndProcesd("/users/user",METHOD_TYPE.GET,null,callback);
 }
-const API = { loginInfo,getPlan,createPlan,createTask,getTask,getConsistency,getTaskBYToday,getDailyTask,getUpcomingTask,getUserInfo};
+
+const updateUserProfile=(payload,callback)=>{
+  fetchAndProcesd("/users/profile",METHOD_TYPE.POST,payload,callback);
+}
+
+const getUserProfile=(callback)=>{
+  fetchAndProcesd("/users/profile",METHOD_TYPE.GET,null,callback);
+}
+
+const API = { loginInfo,getPlan,createPlan,createTask,getTask,getConsistency,getTaskBYToday,getDailyTask,getUpcomingTask,getUserInfo,updateUserProfile,getUserProfile};
 export default API;

@@ -42,7 +42,7 @@ function DrawerAppBar(props) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center',position:'relative' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
         <img src={logo} alt='logo' width="50px" height="60px" />
       </Typography>

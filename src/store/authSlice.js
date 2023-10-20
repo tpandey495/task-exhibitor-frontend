@@ -1,45 +1,81 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { loginInfo, logout } from "../services/auth.service";
-import { createSlice } from "@reduxjs/toolkit";
-import decode from "jwt-decode";
+// userSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchAndProcesd } from "utils/apiAxios"; // Import your global API function
+import jwtDecode from "jwt-decode";
 
-// Define your 'user' variable before using it
-const user = JSON.parse(localStorage.getItem("user"));
+// Define action types as constants for consistency
+const USER_LOGIN = "user/login";
+const USER_INFO = "user/fetchInfo";
 
-// Decoding 'user' outside the scope of 'if (user)'
-let decoded = ""; // Default value in case there's no user in local storage
+// Initialize the user based on localStorage
+let user = JSON.parse(localStorage.getItem("user"));
 if (user) {
-  decoded = decode(user); // Decoding the user token using jwt-decode
+  user = jwtDecode(user);
 }
 
-// 'initialState' should be an object, not an expression
-const initialState = user
-  ? { isLoggedIn: true, user: decoded }
-  : { isLoggedIn: false, user: null };
+const initialState = {
+  users: [],
+  user: user,
+  isLoggedin: user ? true : false,
+  data: null,
+  error: null,
+  loading: false,
+};
 
-export const logauth = createAsyncThunk("auth/login", async (payload, thunkAPI) => {
-  try {
-    const data = await loginInfo(payload);
-    return { user: data };
-  } catch (error) {
-    return thunkAPI.rejectWithValue();
+export const loginUser = createAsyncThunk(
+  USER_LOGIN,
+  async (payload, { rejectWithValue }) => {
+    try {
+      const responseData = await fetchAndProcesd("/users/login", "POST", payload);
+      return responseData;
+    } catch (error) {
+      throw rejectWithValue(error.message || "An error occurred while making the request.");
+    }
   }
-});
+);
 
-const authSlice = createSlice({
-  name: "auth",
+export const UserInfo = createAsyncThunk(
+  USER_INFO,
+  async (payload, { rejectWithValue }) => {
+    try {
+      const responseData = await fetchAndProcesd("/users/user", "GET");
+      return responseData;
+    } catch (error) {
+      throw rejectWithValue(error.message || "An error occurred while making the request.");
+    }
+  }
+);
+
+const userSlice = createSlice({
+  name: "user",
   initialState,
+  reducers: {}, // Your other reducers if needed
   extraReducers: {
-    [logauth.fulfilled]: (state, action) => {
-      state.isLoggedIn = true;
-      state.user = action.payload.user;
+    [loginUser.pending]: (state) => {
+      state.loading = true;
     },
-    [logauth.rejected]: (state, action) => {
-      state.isLoggedIn = false;
-      state.user = null;
+    [loginUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.users.push(action.payload);
+      localStorage.setItem("user", JSON.stringify(action.payload?.authToken));
+    },
+    [loginUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+    [UserInfo.pending]: (state) => {
+      state.loading = true;
+    },
+    [UserInfo.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.users.push(action.payload);
+    },
+    [UserInfo.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
     },
   },
 });
 
-export const { reducer } = authSlice;
+export const { reducer } = userSlice;
 export default reducer;

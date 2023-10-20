@@ -190,7 +190,7 @@ const Registration = () => {
         return;
     }
     try {
-      const response = await axios.post("http://localhost:9000/api/users/signup",
+      const response = await axios.post("https://tracker-8glk.onrender.com/api/users/signup",
           JSON.stringify({email:email
             ,fName:fName,lName:lName,password:password,type:proname}),
           {
@@ -199,7 +199,7 @@ const Registration = () => {
           }
       );
       if(response?.data?.message ==="successfully user has created his account"){
-             Navigate('/login');
+             Navigate('/');
       }
       userRegistration({name:"",email:"",proname:"",password:"",confirmpassword:""});
   } catch (err) {
@@ -273,17 +273,13 @@ return (
         <TextSpan  htmlFor='proname'>Profession</TextSpan>
       </FieldText>
       <Box>
-        <Input
-         type='text'
-         autoComplete='off'
-         value={userRegistration.proname}
-         onChange={handleInput}
+        <Input type='text' autoComplete='off' value={userRegistration.proname} onChange={handleInput}
          name='proname'
          id='proname'/>
       </Box>
       </MainBox>
       <MainBox>
-
+        
       <FieldText>
         <TextSpan  htmlFor='password'>Password</TextSpan>
       </FieldText>

@@ -1,4 +1,4 @@
-import React,{useContext} from 'react';
+import React,{useState,useEffect} from 'react';
 import AppBar from '@mui/material/AppBar'; 
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -13,19 +13,41 @@ import Toolbar from '@mui/material/Toolbar';
 import pagesData from "config/pages";
 import logo from "assets/images/logo.png"
 import profile1 from "assets/images/profile1.png";
+import profilepicture from "assets/images/profilepic.jpeg";
 import Navbar from '../navbar/index';
 import {Outlet,Link} from 'react-router-dom';
 import Heatmap from 'component/Heatmap';
+import API from "utils/api";
+
 const drawerWidth = 230;
 
 function ResponsiveDrawer(props) {
-
+  const[profilepic,setProfilepic]=useState(null);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleSubmit = async (event) => {
+    try {
+      await API.getUserProfile(async(flag,res)=>{
+        const blob = await res.blob();
+       setProfilepic(blob)
+      })
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+    }
+  }
+
+  const createBlobUrl = (base64Data) => {
+    const blob = new Blob([Uint8Array.from(atob(base64Data), c => c.charCodeAt(0))], { type: 'image/jpeg' });
+    return URL.createObjectURL(blob);
+  };
+
+  useEffect(()=>{
+    handleSubmit()
+  },[])
 
   const drawer = (
     <div>
@@ -33,12 +55,13 @@ function ResponsiveDrawer(props) {
       <img src={logo} style={{width:"96px",height:"115px"}} alt="logo of the company" />
      </List>
      <Divider />
+     {console.log(profilepic)}
      <List className="profile" sx={{textAlign:"center"}}>
-     <img src={profile1} style={{width:"100px",height:"100px"}} alt="logo of the company" />
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQefzdu7AmhFkTRPg5krNBHh0if3gHheNy_Qw&usqp=CAU" style={{width:"100px",height:"100px"}} alt="profile picture" />
       </List>
       <Divider />
       <List>
-        {pagesData.map((data, index) => (
+        {pagesData&&pagesData.map((data, index) => (
           data.name ==="logout"?
           <ListItemButton key={index}>
           <ListItem disablePadding>
@@ -57,9 +80,7 @@ function ResponsiveDrawer(props) {
       </List>
     </div>
   );
-
   const container = window !== undefined ? () => window().document.body : undefined;
-
   return (
     <>
     <Box sx={{ display: 'flex' }}>
@@ -85,7 +106,6 @@ function ResponsiveDrawer(props) {
          </Toolbar>
          <Navbar /> 
       </AppBar>
-
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -124,7 +144,4 @@ function ResponsiveDrawer(props) {
     </>
   );
 }
-
-
-
 export default ResponsiveDrawer;

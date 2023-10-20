@@ -1,0 +1,73 @@
+.profile-section{
+    margin-top:150px;
+    text-align:center;
+}
+
+ .profile-pic{
+    margin-top:30px;
+    display:flex;
+    flex-direction:row;
+    margin-left:33%;
+    gap:20px;
+}
+
+.profile-pic button{
+    background-color: blue;
+    border-radius:5px;
+    height:30px;
+    width:63px;
+    color:white;
+}
+
+.profile-title{
+    margin-top:50px;
+}
+
+.profile-field-parent{
+    margin-top:30px;
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+    display:flex;
+    flex-wrap:wrap;
+}
+
+.profile-field{
+    margin-top:50px;
+    flex-basis:50%;
+    flex-grow:1;
+}
+
+.profile-field .profile-name{
+     font-size:20px;
+     margin-left:20px;
+}
+
+ .profile-input input{
+    height:30px;
+    width:250px;
+    margin-top:20px;
+}
+
+@media only screen and (max-width: 400px) {
+    .profile-input input{
+      width:180px;
+    }
+}
+
+.profile-section  #submit-button{
+    margin-left:-42%;
+    margin-top:50px;
+    width:100px;
+    height:30px;
+    background-color:rgba(8, 32, 243, 0.75);
+    border:none;
+    border-radius:5px;
+    color:white;
+}
+
+@media only screen and (max-width: 600px) {
+    .profile-section  button{
+      margin-left:20%;
+    }
+}
