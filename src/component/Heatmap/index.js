@@ -1,61 +1,48 @@
-import React,{useState,useEffect}  from 'react';
+import React, {useEffect } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import ReactTooltip from 'react-tooltip';
+import {useSelector,useDispatch } from 'react-redux';
 import 'react-calendar-heatmap/dist/styles.css';
-import  './heatmap.css';
-import API from 'utils/api';
+import './heatmap.css';
+import {fetchConsistency} from 'store/progressSlice';
 
 
-
-const Heatmap=()=>{
-  const[comp,setComp]=useState([]);
- 
-  
-  const fetchTask=()=>{
-    try{
-      API.getConsistency((flag,res)=>setComp(res.data));
-     }
-    catch(err){
-     console.log(err)
+const Heatmap = () => {
+  const {heatmapdata}=useSelector((state)=>state.progress);
+  const dispatch=useDispatch();
+  const getConsistency =async() => {
+    try {
+     await dispatch(fetchConsistency());
+    }
+    catch (err) {
+      console.log(err)
     }
   }
 
- useEffect(()=>{
-  fetchTask();
- },[])
+  useEffect(() => {
+    getConsistency();
+  }, [])
 
-//  to format date  like heatmap
-  let dates=[];
-   for(var i=0;i<comp.length;i++){
-    comp[i]?.data?.forEach(element => {
-      const datessplit=element?.date.split("/");
-      const count=element?.cnt;
-      const date=`${datessplit[2]}-${datessplit[1]}-${datessplit[0]}`;
-      dates.push({date,count});
-    });
-   }
+  const dates=[];
+  const date = new Date();
+  const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  // one before to current date
+  const prevyear = `${date.getFullYear() - 1}-${date.getMonth()}-${date.getDate()}`;
 
- 
-  const date=new Date();
-  const today=`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-  const prevyear=`${date.getFullYear()-1}-${date.getMonth()}-${date.getDate()}`;
   return (
-    <div style={{marginLeft:"16%",marginTop:"5%"}}>
+    <div style={{ marginLeft: "16%", marginTop: "5%" }}>
       <CalendarHeatmap
         startDate={prevyear}
         endDate={today}
-
-         values={dates}
-
+        values={heatmapdata}
         classForValue={value => {
           if (!value) {
             return 'color-empty';
           }
-          if(value.count>=4)
+          if (value.count >= 4)
             return `color-github-4`;
-            return `color-github-${value.count}`;
+          return `color-github-${value.count}`;
         }}
-
         tooltipDataAttrs={value => {
           return {
             'data-tip': `${value.date} has count: ${value.count}`,
@@ -70,4 +57,4 @@ const Heatmap=()=>{
 
 
 
-export  default Heatmap;
+export default Heatmap;
