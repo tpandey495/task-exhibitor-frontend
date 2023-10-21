@@ -12,6 +12,7 @@ const Heatmap = () => {
   const dispatch=useDispatch();
   const getConsistency =async() => {
     try {
+    if(heatmapdata.length<=0)
      await dispatch(fetchConsistency());
     }
     catch (err) {

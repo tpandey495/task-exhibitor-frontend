@@ -5,7 +5,7 @@ import { fetchAndProcesd } from "utils/apiAxios";
 const Plans = "plan/fetchConsistency";
 
 const initialState = {
-  heatmapdata:null,
+  heatmapdata:[],
   data: null,
   error: null,
   loading: false,

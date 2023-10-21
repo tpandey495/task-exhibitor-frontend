@@ -1,22 +1,22 @@
 import React, { useState,useEffect } from 'react';
-import styled from 'styled-components';
-import ResponsiveDialog from './Taskpopup';
-import API from '../../utils/api';
 import { useSearchParams } from 'react-router-dom';
+import {useSelector,useDispatch } from 'react-redux';
+import ResponsiveDialog from './Taskpopup';
 import  './task.css';
 import TaskCard from 'component/Task';
+import {getTaskByPlan} from 'store/taskSlice';
 
 const TaskPage =() => {
-    const [tasks,setTask]=useState([]);
     const [params]=useSearchParams();
+    const dispatch=useDispatch();
+    const {tasks} =useSelector((state)=>state.task)
     const id=params.get("t");
     const payload={
       "plan_id":id
     }
-
-    const fetchTask=()=>{
+    const fetchTask=async()=>{
       try{
-        API.getTask(null,payload,(flag,res)=>setTask(res.data));
+        await dispatch(getTaskByPlan(payload));
       }
       catch(err){
         console.log(err);
@@ -40,7 +40,6 @@ const TaskPage =() => {
         })
       }
     </div>
-
-)  }
+ )}
    
    export default TaskPage;

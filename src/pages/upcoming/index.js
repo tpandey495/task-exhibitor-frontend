@@ -1,13 +1,15 @@
-import React,{useState,useEffect} from 'react';
-import API from '../../utils/api';
+import React,{useEffect} from 'react';
+import {useSelector,useDispatch} from "react-redux";
 import TaskCard from 'component/Task';
+import {gettaskbyfilter} from 'store/taskSlice';
 
 const Upcoming=()=>{
-  const[dailytask,setTask]=useState([]);
+  const{tasksfilter}=useSelector((state)=>state.task);
+  const dispatch=useDispatch();
   
-  const fetchTask=()=>{
+  const fetchTask=async()=>{
       try{
-        API.getUpcomingTask((flag,res)=>setTask(res.data));
+        await dispatch(gettaskbyfilter("upcoming"));
       }
       catch(err){
         console.log(err);
@@ -22,7 +24,7 @@ const Upcoming=()=>{
     <div className="daily" style={{marginTop:"150px",width:"100%",marginBottom:"100px"}}>
       <h1 style={{textAlign:'center',marginBottom:"50px"}}>Upcoming</h1>
         {
-      dailytask&&dailytask.map((task)=>{
+      tasksfilter?.upcoming&&tasksfilter?.upcoming.map((task)=>{
         const date=`${task?.date?.day}-${task?.date?.month}-${task?.date?.year}`;
      return  <TaskCard key={task._id} id={task._id} name={task.task_name} due={task.timinng} duedate={date} />
         })
