@@ -6,7 +6,7 @@ import { UserInfo } from 'store/authSlice';
 import { fetchPlan } from 'store/planSlice';
 import Card from './Cards';
 import ResponsiveDialog from './Popup';
-import API from '../../utils/api';
+
 
 const Dashboard = () => {
   const { isLoggedin, users } = useSelector((state) => state.auth);
@@ -50,7 +50,7 @@ const Dashboard = () => {
         <p className="welcome-text">
           Hello<span className="user-name">{capitalizeFirstLetter(users[0]?.fName)}</span>
         </p>
-        <ResponsiveDialog fetchPlan={getPlan} />
+        <ResponsiveDialog/>
       </div>
       {console.log(plans)}
       <div className="card-par">

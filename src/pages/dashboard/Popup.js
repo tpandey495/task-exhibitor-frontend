@@ -8,16 +8,20 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import Stack from '@mui/material/Stack';
-import API from '../../utils/api';
+import { useDispatch } from 'react-redux';
 import './Card.css';
+import {fetchPlan,createPlan} from 'store/planSlice';
 
 const Text = styled.h5``;
-const ResponsiveDialog = ({ fetchPlan }) => {
-  const [open, setOpen] =useState(false);
+const ResponsiveDialog = () => {
+  const [open, setOpen] = useState(false);
   const [plan, setPlan] = useState({
     planName: "", desc: ""
   });
-  const[err,setErr]=useState("");
+  const [err, setErr] = useState("");
+  const dispatch = useDispatch();
+
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -37,16 +41,10 @@ const ResponsiveDialog = ({ fetchPlan }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await API.createPlan(payload, (flag, res) => {
-        if(!flag){
-        setPlan({ plan: "", desc: "" });
-        handleClose();
-        fetchPlan();
-        }
-        else{
-           setErr("Error in Creating Plan")
-        }
-      });
+      await dispatch(createPlan(payload));
+      setPlan({ plan: "", desc: "" });
+      handleClose();
+      await dispatch(fetchPlan());
     }
     catch (err) {
       setErr(err);
@@ -56,7 +54,7 @@ const ResponsiveDialog = ({ fetchPlan }) => {
     <div>
       <button className="addPlan" onClick={handleClickOpen}>Add Plan</button>
       <Dialog open={open} onClose={handleClose}>
-       {err&&<div className="err">{err}</div>}
+        {err && <div className="err">{err}</div>}
         <DialogTitle >{"Planning"}</DialogTitle>
         <DialogContent>
           <Box component="form" onSubmit={handleSubmit}
@@ -65,9 +63,9 @@ const ResponsiveDialog = ({ fetchPlan }) => {
             }}>
             <Text>Plan Name</Text>
             <TextField name='planName' id="outlined-basic" variant="outlined" value={plan.plan} onChange={handleInput}
-              placeholder='Plan Name' required/>
+              placeholder='Plan Name' required />
             <Text>Description</Text>
-            <TextField  name='desc' id="outlined-basic" variant="outlined" value={plan.desc}
+            <TextField name='desc' id="outlined-basic" variant="outlined" value={plan.desc}
               onChange={handleInput}
               placeholder='Description' />
             <Stack spacing={2} direction="row">

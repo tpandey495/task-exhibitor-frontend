@@ -23,6 +23,17 @@ export const fetchPlan = createAsyncThunk(
   }
 );
 
+export const createPlan=createAsyncThunk(
+   "plan/createPlan",
+  async(payload,{rejectWithValue})=>{
+    try{
+    const responseData=await fetchAndProcesd("/plan","POST",payload);
+    return responseData;
+    }catch(error){
+      throw rejectWithValue(error.message || "An error occurred while making the request.");
+    }
+  }
+);
 
 const planSlice = createSlice({
   name: "plan",
@@ -41,6 +52,15 @@ const planSlice = createSlice({
       state.loading = false;
       state.error = action.payload.message;
     },
+    [createPlan.pending]:(state)=>{
+      state.loading=true;
+    },
+    [createPlan.fulfilled]:(state,action)=>{
+       console.log(action.payload);
+    },
+    [createPlan.rejected]:(state,action)=>{
+      state.error=action.payload.message;
+    }
   },
 });
 
