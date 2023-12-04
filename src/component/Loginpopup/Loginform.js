@@ -1,17 +1,27 @@
-import React, { useState, useRef } from 'react';
-import './login.css';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useState,useEffect, useRef } from 'react';
+import { Navigate, useNavigate,useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from '../../store/authSlice';
+import { loginUser,setToken as setTokenAction} from 'store/authSlice';
 import { Link } from 'react-router-dom';
+import './login.css';
 
 const PopupForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [err, setErr] = useState(false);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const [token,setToken ]=useState(searchParams.get('token'));
+
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
 
+  useEffect(()=>{
+    console.log(token);
+    if(token && !localStorage.getItem("user"))
+      dispatch(setTokenAction(token));
+  },[token])
+  
   const errRef = useRef();
   const navigate = useNavigate();
   const errMsg = "";
@@ -38,7 +48,6 @@ const PopupForm = () => {
       email: email,
       password: password
     }
-
   await  dispatch(loginUser(payload))
       .unwrap()
       .then(() => {
@@ -49,6 +58,11 @@ const PopupForm = () => {
         console.log(err);
       });
   };
+  // LoginwithGoogle
+  const LoginwithGoogle=async(e)=>{
+    e.preventDefault();
+    window.location.href = 'http://localhost:9000/api/users/google';
+   }
 
   if (isLoggedIn) {
     return <Navigate to="/dashboard" />;
@@ -63,7 +77,6 @@ const PopupForm = () => {
             <h2>Login</h2>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <form onSubmit={handleSubmit}>
-
               <label htmlFor="email">Email:</label>
               <input type="email"
                 autoComplete='off'
@@ -71,7 +84,6 @@ const PopupForm = () => {
                 onChange={handleInput}
                 name='email'
                 id='email' />
-
               <label htmlFor="password">Password:</label>
               <input type='password'
                 autoComplete='off'
@@ -79,12 +91,8 @@ const PopupForm = () => {
                 onChange={handleInput}
                 name='password'
                 id='password' />
-
               <a href='#' className='forget-link'>forget password?</a>
-
-              <button className='long-button'>Login with facebook</button>
-              <button className='long-button'>Login with Google</button>
-
+              <button className='long-button' onClick={LoginwithGoogle}>Login with Google</button>
               <Link className='forget-link' to="/registration">Signup</Link>
               <div className='button-section'>
                 <button className="close-btn" onClick={togglePopup}>
@@ -93,7 +101,6 @@ const PopupForm = () => {
                 <button type="submit" onClick={handleSubmit}>Submit</button>
               </div>
             </form>
-
           </div>
         </div>
       )}

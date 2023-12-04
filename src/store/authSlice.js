@@ -1,13 +1,10 @@
-// userSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAndProcesd } from "utils/apiAxios"; // Import your global API function
 import jwtDecode from "jwt-decode";
 
-// Define action types as constants for consistency
 const USER_LOGIN = "user/login";
 const USER_INFO = "user/fetchInfo";
 
-// Initialize the user based on localStorage
 let user = JSON.parse(localStorage.getItem("user"));
 if (user) {
   user = jwtDecode(user);
@@ -36,7 +33,7 @@ export const loginUser = createAsyncThunk(
 
 export const UserInfo = createAsyncThunk(
   USER_INFO,
-  async (payload, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const responseData = await fetchAndProcesd("/users/user", "GET");
       return responseData;
@@ -49,7 +46,15 @@ export const UserInfo = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {}, // Your other reducers if needed
+  reducers: {
+    setToken: (state, action) => {
+       console.log(action);
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      state.user = action.payload;
+      state.isLoggedin = true;
+    },
+    // Your other reducers if needed
+  },
   extraReducers: {
     [loginUser.pending]: (state) => {
       state.loading = true;
@@ -61,6 +66,7 @@ const userSlice = createSlice({
     },
     [loginUser.rejected]: (state, action) => {
       state.loading = false;
+      console.log(action?.error?.message);
       state.error = action.payload.message;
     },
     [UserInfo.pending]: (state) => {
@@ -77,5 +83,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { reducer } = userSlice;
-export default reducer;
+export const { setToken } = userSlice.actions;
+export const userReducer = userSlice.reducer;
+export default userReducer;
