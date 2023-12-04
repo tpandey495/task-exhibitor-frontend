@@ -3,6 +3,7 @@ import { Navigate, useNavigate,useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser,setToken as setTokenAction} from 'store/authSlice';
 import { Link } from 'react-router-dom';
+import {Base_URL} from 'utils/constant';
 import './login.css';
 
 const PopupForm = () => {
@@ -61,7 +62,7 @@ const PopupForm = () => {
   // LoginwithGoogle
   const LoginwithGoogle=async(e)=>{
     e.preventDefault();
-    window.location.href = 'http://localhost:9000/api/users/google';
+    window.location.href = `${Base_URL}/users/google`;
    }
 
   if (isLoggedIn) {
