@@ -1,14 +1,3 @@
-.open-btn{
-  color:white;
-  margin-left:2rem;
-  background-color: rgba(126,28,254,1);
-  font-weight:400;
-  font-size: 15px;
-  border:none;
-  border-radius:5px;
-  height:30px;
-  width:60px;
-}
 
 @media only screen and (max-width: 600px) {
   .open-btn{
@@ -60,65 +49,23 @@
   border: transparent;
   
 }
+
 .popup form input:focus{
   outline: none;
 }
  
-.popup form button[type='submit'] {
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  background-color: blue;
-  border-radius: 10px;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.close-btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: blue;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-}
-
 .button-section{
    margin-top: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
+
 .forget-link{
   margin-top: 10px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.long-button {
-  display: inline-block;
-  margin-top: 10px;
-  width: 320px;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  background-color: blue;
-  border-radius: 10px;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .long-button {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-  }
 }
