@@ -36,7 +36,7 @@ const TaskPage =() => {
      {
       tasks&&tasks.map((task)=>{
         const date=task?.date?.month<10?`${task?.date?.year}-0${task?.date?.month}-${task?.date?.day}`:`${task?.date?.year}-${task?.date?.month}-${task?.date?.day}`;
-     return  <TaskCard key={task._id} id={task._id} name={task.task_name} due={task.timing} duedate={date} dailytask={task.is_daily_task} />
+     return  <TaskCard key={task._id} id={task._id} name={task.task_name} due={task.timing} duedate={date} dailytask={task.is_daily_task} plan_id={payload}/>
         })
       }
     </div>

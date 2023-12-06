@@ -1,13 +1,13 @@
 import react,{useState} from 'react';
 import {AiOutlineEdit} from 'react-icons/ai';
 import {SlOptionsVertical} from 'react-icons/sl';
+import {useDispatch} from 'react-redux';
+import {updateTask,getTaskByPlan,gettaskbyfilter} from 'store/taskSlice';
 import './taskcard.css';
-import  API from 'utils/api';
-import {METHOD_TYPE} from 'utils/constant';
 
 const TaskCard=(props)=>{
     const[show,setShow]=useState(-1);
-    const{name,due,duedate,id,dailytask}=props;
+    const{name,due,duedate,id,dailytask,plan_id}=props;
     const[isEditable,setIsEditable]=useState(false);
     const[edittask,setEdittask]=useState({"task_id" :id,
                       "task_name" : name,
@@ -26,9 +26,8 @@ const TaskCard=(props)=>{
     }
     
 
-      const compareDates = () => {
+    const compareDates = () => {
         const date1=new Date().getTime();
-        console.log(duedate);
         let date2 = new Date(`${duedate}T${due}:00+05:30`).getTime();
         if (date1 < date2) {
            return  false;
@@ -37,11 +36,16 @@ const TaskCard=(props)=>{
         } else {
            return false;
         }
-      };
+    };
 
-    const handleSubmit=(e)=>{
+    const dispatch=useDispatch();
+    const handleSubmit=async(e)=>{
       try{
-          API.getTask(METHOD_TYPE.PUT,edittask,(flag,res)=>console.log(res));
+          await  dispatch(updateTask(edittask));
+          await dispatch(getTaskByPlan(plan_id));
+          await dispatch(gettaskbyfilter("upcoming"));
+          await dispatch(gettaskbyfilter("today"));
+          await dispatch(gettaskbyfilter("daily"));
         }
       catch(err){
          console.log(err);

@@ -1,6 +1,6 @@
 // userSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAndProcesd } from "utils/apiAxios"; // Import your global API function
+import { fetchAndProcesd } from "utils/apiAxios";
 
 // Define action types as constants for consistency
 const task = "plan/task";
@@ -53,6 +53,18 @@ export const createTask = createAsyncThunk(
     }
 );
 
+export const updateTask = createAsyncThunk(
+    "updatetask", async (updatedData, { rejectWithValue }) => {
+        try {
+            const responseData = await fetchAndProcesd(`/task`, "PUT", updatedData);
+            return responseData;
+        }
+        catch (error) {
+            throw rejectWithValue(error.message || "An error occurred while making request")
+        }
+    }
+);
+
 const taskSlice = createSlice({
     name: "tasks",
     initialState,
@@ -83,20 +95,21 @@ const taskSlice = createSlice({
         },
         [gettaskbyfilter.fulfilled]: (state, action) => {
             state.loading = false;
+            console.log(action.payload)
             state.tasksfilter[action.payload.payload] = action.payload.responseData?.data;
         },
-        [gettaskbyfilter.rejected]: (state, action) => {
-            state.loading = false;
+        [gettaskbyfilter.rejected]: (state, action) => {  state.loading = false;
+            state.error = action.payload.message;
             state.error = action.payload.message;
         },
-        [createTask.pending]: (state) => {
+        [updateTask.pending]: (state) => {
             state.loading = true;
         },
-        [createTask.fulfilled]: (state, action) => {
+        [updateTask.fulfilled]: (state, action) => {
             state.loading = false;
-            state.tasksfilter[action.payload.payload] = action.payload.responseData?.data;
+            //console.log(action);
         },
-        [createTask.rejected]: (state, action) => {
+        [updateTask.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload.message;
         },

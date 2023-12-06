@@ -11,6 +11,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useSearchParams } from 'react-router-dom';
 import {useDispatch } from 'react-redux';
 import {gettaskbyfilter,getTaskByPlan,createTask} from 'store/taskSlice';
+import {fetchPlan} from 'store/planSlice';
 import './task.css'
 
 const Text = styled.h5`
@@ -43,13 +44,19 @@ const ResponsiveDialog = () => {
     setOpen(false);
   };
 
+  
+
   const handleSave = async (e) => {
     e.preventDefault();
     try {
+      const payload={
+        "plan_id":id
+      }
        await dispatch(createTask(task));
-       await dispatch(getTaskByPlan());
+       await dispatch(getTaskByPlan(payload));
        await dispatch(gettaskbyfilter("today"));
        await dispatch(gettaskbyfilter("upcoming"));
+       await dispatch(fetchPlan());
       if(task?.is_daily_task)
        await dispatch(gettaskbyfilter("daily"));
        handleClose();
