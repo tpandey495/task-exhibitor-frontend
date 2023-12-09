@@ -47,12 +47,16 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action) => {
-       console.log(action);
       localStorage.setItem("user", JSON.stringify(action.payload));
       state.user = action.payload;
       state.isLoggedin = true;
+    },
+    logout:(state,action)=>{
+       localStorage.removeItem("user");
+       state.isLoggedin=false;
+       state.user=null;
+       state.users=[];
     }
-    
   },
   extraReducers: {
     [loginUser.pending]: (state) => {
@@ -82,6 +86,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setToken } = userSlice.actions;
+export const { setToken,logout } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 export default userReducer;

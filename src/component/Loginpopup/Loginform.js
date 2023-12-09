@@ -62,10 +62,10 @@
               <form onSubmit={handleSubmit}>
                 <label htmlFor="email" id="login-content">Email:</label>
                 <Input type="email" autoComplete='off' value={logininfo.email}
-                  onChange={handleInput} name='email' id='email' width="270px"/>
+                  onChange={handleInput} name='email' id='email' width="270px" required/>
                 <label  htmlFor="password" id="login-content">Password:</label>
                 <Input type='password' autoComplete='off' value={logininfo.password} 
-                  onChange={handleInput} name='password' id='password' width="270px" />
+                  onChange={handleInput} name='password' id='password' width="270px" required />
                 <Link to="/forget" className='forget-link'>forget password?</Link>
                 <Button type="button" className='long-button' onClick={LoginwithGoogle} children="Login with Google" width="270px" />
                 <Link className='forget-link' to="/registration">Signup</Link>

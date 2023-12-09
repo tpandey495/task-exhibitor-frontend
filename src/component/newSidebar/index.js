@@ -10,12 +10,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
+import {useDispatch} from "react-redux";
 import pagesData from "config/pages";
-import logo from "assets/images/logo.png"
-import profile1 from "assets/images/profile1.png";
-import profilepicture from "assets/images/profilepic.jpeg";
+import logo from "assets/images/logo.png";
+import {logout} from 'store/authSlice';
 import Navbar from '../navbar/index';
-import {Outlet,Link} from 'react-router-dom';
+import {Outlet,Link,useNavigate} from 'react-router-dom';
 import Heatmap from 'component/Heatmap';
 import API from "utils/api";
 
@@ -23,6 +23,7 @@ const drawerWidth = 230;
 
 function ResponsiveDrawer(props) {
   const[profilepic,setProfilepic]=useState(null);
+  const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
@@ -38,6 +39,13 @@ function ResponsiveDrawer(props) {
     } catch (error) {
       console.error('Error uploading profile picture:', error);
     }
+  }
+  
+  const dispatch=useDispatch();
+
+  const logoutHandle=()=>{
+    dispatch(logout());
+    navigate("/");
   }
 
   const createBlobUrl = (base64Data) => {
@@ -65,7 +73,7 @@ function ResponsiveDrawer(props) {
           <ListItemButton key={index}>
           <ListItem disablePadding>
               <Box sx={{ml:"20px"}}  className="nav_icon" >{data.icon}</Box>
-           <ListItemText onClick={()=>console.log("call logout function")} sx={{ml:"20px",fontSize:"25px"}} primary={data.name} />
+           <ListItemText onClick={logoutHandle} sx={{ml:"20px",fontSize:"25px"}} primary={data.name} />
            </ListItem>
            </ListItemButton>: <ListItem key={index} disablePadding>
             <Link to={`${data.path}`} style={{textDecoration:"none",color:"black"}}>
