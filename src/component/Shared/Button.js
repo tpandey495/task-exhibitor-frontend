@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({type, onClick, children,backgroundColor,color = 'blue',width='auto',height = 'auto' }) => {
+const Button = ({type, onClick, children,backgroundColor,color = 'blue',width='auto',height = 'auto',className,id }) => {
   const buttonStyle = {
     backgroundColor: backgroundColor?backgroundColor:"blue",
     height: height,
@@ -14,7 +14,7 @@ const Button = ({type, onClick, children,backgroundColor,color = 'blue',width='a
   };
 
   return (
-    <button type={type} onClick={onClick} style={buttonStyle}>
+    <button type={type} onClick={onClick} style={buttonStyle} className={className} id={id}>
       {children}
     </button>
   );

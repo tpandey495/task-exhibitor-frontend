@@ -14,7 +14,6 @@ const initialState = {
   users: [],
   user: user,
   isLoggedin: user ? true : false,
-  data: null,
   error: null,
   loading: false,
 };
@@ -38,7 +37,7 @@ export const UserInfo = createAsyncThunk(
       const responseData = await fetchAndProcesd("/users/user", "GET");
       return responseData;
     } catch (error) {
-      throw rejectWithValue(error.message || "An error occurred while making the request.");
+      throw rejectWithValue(error || "An error occurred while making the request.");
     }
   }
 );
@@ -52,8 +51,8 @@ const userSlice = createSlice({
       localStorage.setItem("user", JSON.stringify(action.payload));
       state.user = action.payload;
       state.isLoggedin = true;
-    },
-    // Your other reducers if needed
+    }
+    
   },
   extraReducers: {
     [loginUser.pending]: (state) => {
@@ -61,13 +60,13 @@ const userSlice = createSlice({
     },
     [loginUser.fulfilled]: (state, action) => {
       state.loading = false;
+      state.isLoggedin=true;
       state.users.push(action.payload);
       localStorage.setItem("user", JSON.stringify(action.payload?.authToken));
     },
     [loginUser.rejected]: (state, action) => {
       state.loading = false;
-      console.log(action?.error?.message);
-      state.error = action.payload.message;
+      state.error =action.payload;
     },
     [UserInfo.pending]: (state) => {
       state.loading = true;

@@ -55,7 +55,6 @@ function ResponsiveDrawer(props) {
       <img src={logo} style={{width:"96px",height:"115px"}} alt="logo of the company" />
      </List>
      <Divider />
-     {console.log(profilepic)}
      <List className="profile" sx={{textAlign:"center"}}>
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQefzdu7AmhFkTRPg5krNBHh0if3gHheNy_Qw&usqp=CAU" style={{width:"100px",height:"100px"}} alt="profile picture" />
       </List>

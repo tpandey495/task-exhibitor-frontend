@@ -3,7 +3,9 @@ import {AiOutlineEdit} from 'react-icons/ai';
 import {SlOptionsVertical} from 'react-icons/sl';
 import {useDispatch} from 'react-redux';
 import {updateTask,getTaskByPlan,gettaskbyfilter} from 'store/taskSlice';
+import { fetchConsistency } from 'store/progressSlice';
 import './taskcard.css';
+
 
 const TaskCard=(props)=>{
     const[show,setShow]=useState(-1);
@@ -41,11 +43,12 @@ const TaskCard=(props)=>{
     const dispatch=useDispatch();
     const handleSubmit=async(e)=>{
       try{
-          await  dispatch(updateTask(edittask));
+        await  dispatch(updateTask(edittask));
           await dispatch(getTaskByPlan(plan_id));
           await dispatch(gettaskbyfilter("upcoming"));
           await dispatch(gettaskbyfilter("today"));
           await dispatch(gettaskbyfilter("daily"));
+          await dispatch(fetchConsistency())
         }
       catch(err){
          console.log(err);
@@ -53,6 +56,7 @@ const TaskCard=(props)=>{
       setIsEditable(false);
     }
 
+  
     const handleComplete=async()=>{
       const updateObj = edittask;
       updateObj.is_completed = true;

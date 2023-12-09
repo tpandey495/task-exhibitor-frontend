@@ -15,8 +15,8 @@ export const fetchAndProcesd = async (url, method, data) => {
     return response.data; // Return the response data
   } catch (error) {
     // If an error occurs, throw an error object with an appropriate message
-    if (error?.response?.data?.error) {
-      throw new Error(error?.response?.data?.error);
+    if (error?.response?.data?.message) {
+      throw new Error(error?.response?.data?.message);
     } else {
       throw new Error("An error occurred while making the request.");
     }

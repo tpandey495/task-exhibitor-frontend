@@ -3,6 +3,7 @@
   import { useDispatch, useSelector } from "react-redux";
   import { loginUser,setToken as setTokenAction} from 'store/authSlice';
   import Button from '../Shared/Button';
+  import Input from '../Shared/Input';
   import {Base_URL} from 'utils/constant';
   import './login.css';
 
@@ -12,6 +13,7 @@
       email: "",
       password: "",
     });
+    const {isLoggedin,error} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     //In case of login with google after redirect reading token from url  
     const location = useLocation();
@@ -41,34 +43,35 @@
         password:logininfo.password
       }
       await  dispatch(loginUser(payload));
-      window.location.reload();
+      if(isLoggedin)
+        setIsOpen(false);
     };
 
-    const togglePopup = () => {
+    const togglePopup = (e) => {
       setIsOpen(!isOpen);
     };
 
     return (
       <>
-        <Button className="open-btn" onClick={togglePopup} children="Login"  />
+        <Button className="open-btn" id="login-open" onClick={togglePopup} children="Login"  />
         {isOpen && (
-          <div className="popup">
-            <div className="popup-content">
-              <h2>Login</h2>
-              {/* <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p> */}
+          <div className="popup" id="login-content">
+            <div className="popup-content"  id="login-content">
+              <h2  id="login-content">Login</h2>
+              {error&&<p  id="login-contnet">{error}</p>}
               <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email:</label>
-                <input type="email" autoComplete='off' value={logininfo.email}
-                  onChange={handleInput} name='email' id='email' />
-                <label htmlFor="password">Password:</label>
-                <input type='password' autoComplete='off' value={logininfo.password} 
-                onChange={handleInput} name='password' id='password' />
-                <a href='#' className='forget-link'>forget password?</a>
-                <Button type="button" className='long-button' onClick={LoginwithGoogle} children="Login with Google" width="320px" />
+                <label htmlFor="email" id="login-content">Email:</label>
+                <Input type="email" autoComplete='off' value={logininfo.email}
+                  onChange={handleInput} name='email' id='email' width="270px"/>
+                <label  htmlFor="password" id="login-content">Password:</label>
+                <Input type='password' autoComplete='off' value={logininfo.password} 
+                  onChange={handleInput} name='password' id='password' width="270px" />
+                <Link to="/forget" className='forget-link'>forget password?</Link>
+                <Button type="button" className='long-button' onClick={LoginwithGoogle} children="Login with Google" width="270px" />
                 <Link className='forget-link' to="/registration">Signup</Link>
-                <div className='button-section'>
+                <div className='button-section' id="login-content">
                   <Button onClick={togglePopup} children="Close" backgroundColor="#bdbcbc" height="40px"/>
-                  <Button type="submit" onClick={handleSubmit} chidren="Submit" height="40px"  children="Submit"/>
+                  <Button type="submit" id="submit" onClick={handleSubmit} chidren="Submit" height="40px"  children="Submit"/>
                 </div>
               </form>
             </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -22,7 +22,7 @@ const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Features', 'Contact'];
 
 function DrawerAppBar(props) {
-  const { user } = useSelector((state) => state.auth);
+  const { isLoggedin} = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -35,14 +35,22 @@ function DrawerAppBar(props) {
     },
   });
 
+  useEffect(()=>{
+   
+  },[isLoggedin])
 
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const handleDrawerToggle = (event) => {
+      //To not close drawer in case of click on login input and button 
+      const clickedElementId = event.target.id;
+      const popupFormChildrenIds = ['email', 'password','login-open',"submit","login-content"]; 
+      if (!popupFormChildrenIds.includes(clickedElementId)){
+        setMobileOpen(!mobileOpen);
+      }
+  }
+  
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center',position:'relative' }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center',position:'relative' }} id="drawer">
       <Typography variant="h6" sx={{ my: 2 }}>
         <img src={logo} alt='logo' width="50px" height="60px" />
       </Typography>
@@ -55,7 +63,7 @@ function DrawerAppBar(props) {
             </ListItemButton>
           </ListItem>
         ))}
-         {user ? <Button onClick={() => navigate("/dashboard")} sx={{ color: 'white', ml: '35px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
+         {isLoggedin?<Button onClick={(e) =>navigate("/dashboard")} sx={{ color: 'white', ml: '35px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
                   dashboard
         </Button> :<PopupForm />}
       </List>
@@ -70,8 +78,8 @@ function DrawerAppBar(props) {
         <Toolbar>
           <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: 'none' }, color: "black" }}
-          >
-            <MenuIcon />
+          > 
+             <MenuIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
             <img src={logo} alt='logo' width="50px" height="60px" />
@@ -83,7 +91,7 @@ function DrawerAppBar(props) {
                   {item}
                 </Button>
               ))}
-              {user ? <Button onClick={() => navigate("/dashboard")} sx={{ color: 'white', ml: '55px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
+              {isLoggedin ? <Button onClick={() => navigate("/dashboard")} sx={{ color: 'white', ml: '35px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
                   dashboard
                 </Button> :<PopupForm />}
             </Box>
