@@ -1,5 +1,5 @@
 // Parmeterized Input 
-const Input = ({ type, value, onChange, name, id, autoComplete, width = 'auto', height = '37px', borderRadius = '5px', borderColor = 'gray' }) => {
+const Input = ({ type, value, onChange, name, id, autoComplete, width = '270px', height = '37px', borderRadius = '5px', borderColor = 'gray' }) => {
     const inputStyle = {
       width: width,
       height:height,

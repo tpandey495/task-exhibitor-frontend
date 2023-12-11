@@ -12,14 +12,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import logo from 'assets/images/logo.png';
+import { useNavigate,Link } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import logo from 'assets/images/logo.png';
 import PopupForm from 'component/Loginpopup/Loginform';
+import Homepages from 'config/Homepages';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Features', 'Contact'];
+
 
 function DrawerAppBar(props) {
   const { isLoggedin} = useSelector((state) => state.auth);
@@ -56,11 +57,13 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
+        {Homepages.map((item) => (
+          <ListItem key={item?.id} disablePadding>
+            <Link to={item?.path} style={{textDecoration:"none",color:"black",marginLeft:"auto",marginRight:"auto"}}>
+              <ListItemButton sx={{ textAlign: 'center' }}>
+                <ListItemText primary={item?.name} />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
          {isLoggedin?<Button onClick={(e) =>navigate("/dashboard")} sx={{ color: 'white', ml: '35px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
@@ -86,9 +89,11 @@ function DrawerAppBar(props) {
           </Box>
           <ThemeProvider theme={theme}>
             <Box sx={{ display: { xs: 'none', sm: 'block' }, mr: '50px' }}>
-              {navItems.map((item) => (
-                <Button key={item} sx={{ color: 'black', ml: '35px', fontWeight: '400', fontSize: '15px' }} >
-                  {item}
+              {Homepages.map((item) => (
+                <Button key={item?.id} sx={{ color: 'black', ml: '35px', fontWeight: '400', fontSize: '15px' }} >
+                  <Link to={item?.path} style={{textDecoration:'none',color:"black"}}>
+                    {item?.name}
+                  </Link>
                 </Button>
               ))}
               {isLoggedin ? <Button onClick={() => navigate("/dashboard")} sx={{ color: 'white', ml: '35px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
