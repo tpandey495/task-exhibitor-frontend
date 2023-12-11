@@ -1,10 +1,10 @@
-  import React, { useState,useEffect} from 'react';
-  import {useLocation,Link} from 'react-router-dom';
+  import React, { useState} from 'react';
+  import {Link} from 'react-router-dom';
   import { useDispatch, useSelector } from "react-redux";
-  import { loginUser,setToken as setTokenAction} from 'store/authSlice';
+  import { loginUser} from 'store/authSlice';
   import Button from '../Shared/Button';
   import Input from '../Shared/Input';
-  import {Base_URL} from 'utils/constant';
+  import LoginwithGoogle from '../LoginwithGoogle';
   import './login.css';
 
   const PopupForm = () => {
@@ -15,20 +15,6 @@
     });
     const {isLoggedin,error} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    //In case of login with google after redirect reading token from url  
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const [token,setToken ]=useState(searchParams.get('token'));
-    //Whenever token changes rendering the ui to dispatch action to set token 
-    useEffect(()=>{
-      if(token && !localStorage.getItem("user"))
-        dispatch(setTokenAction(token));
-    },[token])
-    // LoginwithGoogle
-    const LoginwithGoogle=async(e)=>{
-      e.preventDefault();
-      window.location.href = `${Base_URL}/users/google`;
-    }
     //Login using email id and password logic
     const handleInput = (e) => {
       const name = e.target.name;
@@ -67,7 +53,7 @@
                 <Input type='password' autoComplete='off' value={logininfo.password} 
                   onChange={handleInput} name='password' id='password' width="270px" required />
                 <Link to="/forget" className='forget-link'>forget password?</Link>
-                <Button type="button" className='long-button' onClick={LoginwithGoogle} children="Login with Google" width="270px" />
+                <LoginwithGoogle  />
                 <Link className='forget-link' to="/registration">Signup</Link>
                 <div className='button-section' id="login-content">
                   <Button onClick={togglePopup} children="Close" backgroundColor="#bdbcbc" height="40px"/>

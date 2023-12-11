@@ -12,7 +12,6 @@ const Dashboard = () => {
   const { isLoggedin, users } = useSelector((state) => state.auth);
   const {plans}=useSelector((state)=>state.plan)
   const dispatch = useDispatch();
-  console.log(users);
   // Fetch user info
   const fetchUserInfo = async () => {
     try {
