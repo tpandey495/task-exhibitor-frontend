@@ -1,5 +1,5 @@
 // Parmeterized Input 
-const Input = ({ type, value, onChange, name, id, autoComplete, width = '270px', height = '37px', borderRadius = '5px', borderColor = 'gray' }) => {
+const Input = ({ type, value, onChange, name, id, autoComplete, width = '270px', height = '37px', borderRadius = '5px', borderColor = 'gray',placeholder }) => {
     const inputStyle = {
       width: width,
       height:height,
@@ -7,6 +7,7 @@ const Input = ({ type, value, onChange, name, id, autoComplete, width = '270px',
       border: `1px solid ${borderColor}`,
       fontSize: '15px',
       padding: '8px',
+      placeholder:placeholder?placeholder:"",
     };
     return (
       <input
@@ -17,6 +18,7 @@ const Input = ({ type, value, onChange, name, id, autoComplete, width = '270px',
         name={name}
         id={id}
         style={inputStyle}
+        placeholder={placeholder}
       />
     );
   };
