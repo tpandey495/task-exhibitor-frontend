@@ -1,9 +1,11 @@
 import React from 'react';
+import Feature from 'component/Feature';
+import './feature.css';
 
 function Features() {
   return (
-    <div>
-      Features
+    <div className="feature-page">
+     <Feature />
     </div>
   );
 }
