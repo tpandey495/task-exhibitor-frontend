@@ -1,16 +1,14 @@
-import React from 'react';
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React,{ useState} from 'react';
 import LoginwithGoogle from 'component/LoginwithGoogle';
 import Button from 'component/Shared/Button';
 import RegisterFeatures from './RegisterFeatures';
+import {useDispatch} from "react-redux";
 import CustomInput from './CustomInput';
+import {RegisterUser} from 'store/authSlice';
 import './registration.css';
 
 const Registration = () => {
-  const errRef = useRef();
-  const Navigate = useNavigate();
-  const [errMsg, setErrMsg] = useState('');
+  const dispatch=useDispatch();
   const [userRegistration, setUserRegistration] = useState({
     fName: "",
     lName: " ",
@@ -28,7 +26,16 @@ const Registration = () => {
   }
 
   const handleSubmit = async (e) => {
-
+     e.preventDefault();
+     dispatch(RegisterUser(userRegistration));
+     setUserRegistration({
+      fName: "",
+      lName: "",
+      email: "",
+      proname: "",
+      password: "",
+      confirmpassword: ""
+    });
   }
 
   return (
@@ -49,7 +56,7 @@ const Registration = () => {
           <LoginwithGoogle />
           {/* Or separator */}
           <p>-------------------------------or-------------------------------</p>
-          <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-divve="assertive">{errMsg}</p>
+          <p>{}</p>
         </div>
         <form onSubmit={handleSubmit}>
           {/* First Name and Last Name using CustomInput component */}

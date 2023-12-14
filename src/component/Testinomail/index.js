@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import testinomail from "../../config/testinomail";
 import quotation from 'assets/images/quotation.png';
 import {Box, Grid ,Typography} from "@mui/material";
-import  '../../style/home.css';
+import  './testinomail.css';
 
 const MediaCard=()=> {
     return (

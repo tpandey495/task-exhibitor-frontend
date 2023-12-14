@@ -5,15 +5,15 @@
   import Button from '../Shared/Button';
   import Input from '../Shared/Input';
   import LoginwithGoogle from '../LoginwithGoogle';
+  import { LoginpopHandle } from 'store/authSlice';
   import './login.css';
 
   const PopupForm = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [logininfo,setLoginInfo] = useState({
       email: "",
       password: "",
     });
-    const {isLoggedin,error} = useSelector((state) => state.auth);
+    const {isLoggedin,loginOpen,error} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     //Login using email id and password logic
     const handleInput = (e) => {
@@ -30,17 +30,17 @@
       }
       await  dispatch(loginUser(payload));
       if(isLoggedin)
-        setIsOpen(false);
+       dispatch(LoginpopHandle());
     };
 
     const togglePopup = (e) => {
-      setIsOpen(!isOpen);
+      dispatch(LoginpopHandle());
     };
 
     return (
       <>
         <Button className="open-btn" id="login-open" onClick={togglePopup} children="Login"  />
-        {isOpen && (
+        {loginOpen && (
           <div className="popup" id="login-content">
             <div className="popup-content"  id="login-content">
               <h2  id="login-content">Login</h2>
@@ -54,7 +54,7 @@
                   onChange={handleInput} name='password' id='password' width="270px" required />
                 <Link to="/forget" className='forget-link'>forget password?</Link>
                 <LoginwithGoogle  />
-                <Link className='forget-link' to="/registration">Signup</Link>
+                <Link className='forget-link' to="/registration" onClick={togglePopup}>Signup</Link>
                 <div className='button-section' id="login-content">
                   <Button onClick={togglePopup} children="Close" backgroundColor="#bdbcbc" height="40px"/>
                   <Button type="submit" id="submit" onClick={handleSubmit} chidren="Submit" height="40px"  children="Submit"/>
