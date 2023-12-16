@@ -2,13 +2,14 @@ import React,{ useState} from 'react';
 import LoginwithGoogle from 'component/LoginwithGoogle';
 import Button from 'component/Shared/Button';
 import RegisterFeatures from './RegisterFeatures';
-import {useDispatch} from "react-redux";
+import {useSelector,useDispatch} from "react-redux";
 import CustomInput from './CustomInput';
 import {RegisterUser} from 'store/authSlice';
 import './registration.css';
 
 const Registration = () => {
   const dispatch=useDispatch();
+  const {error}=useSelector((state)=>state?.auth?.registration);
   const [userRegistration, setUserRegistration] = useState({
     fName: "",
     lName: " ",
@@ -56,7 +57,7 @@ const Registration = () => {
           <LoginwithGoogle />
           {/* Or separator */}
           <p>-------------------------------or-------------------------------</p>
-          <p>{}</p>
+          {error&&<p className="registration-error">{error}</p>}
         </div>
         <form onSubmit={handleSubmit}>
           {/* First Name and Last Name using CustomInput component */}

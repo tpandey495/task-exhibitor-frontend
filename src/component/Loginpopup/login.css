@@ -70,8 +70,11 @@
    margin-right:auto;
 }
 
-.forget-link{
+.forget-link,.back-login{
   margin:10px 0px 10px 0px;
   display: flex;
   justify-content: center;
+  text-decoration: underline;
+  color: blue; 
+  cursor: pointer;
 }

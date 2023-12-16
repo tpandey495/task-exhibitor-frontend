@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useRef} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -27,7 +27,7 @@ function DrawerAppBar(props) {
   const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const parentRef = useRef(null);
   const theme = createTheme({
     typography: {
       fontFamily: [
@@ -41,14 +41,19 @@ function DrawerAppBar(props) {
   },[isLoggedin])
 
   const handleDrawerToggle = (event) => {
-      //To not close drawer in case of click on login input and button 
-      const clickedElementId = event.target.id;
-      const popupFormChildrenIds = ['email', 'password','login-open',"submit","login-content"]; 
-      if (!popupFormChildrenIds.includes(clickedElementId)){
-        setMobileOpen(!mobileOpen);
-      }
+    if(event.target.id==="registration-redirect"){
+      setMobileOpen(!mobileOpen); 
+    }
+    else if (parentRef.current && parentRef.current.contains(event.target)) {
+      return;
+    }
+    else if(event.target.id==="login-open"){
+      return;
+    }
+    else {
+      setMobileOpen(!mobileOpen); 
+    }
   }
-  
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center',position:'relative' }} id="drawer">
@@ -68,7 +73,7 @@ function DrawerAppBar(props) {
         ))}
          {isLoggedin?<Button onClick={(e) =>navigate("/dashboard")} sx={{ color: 'white', ml: '35px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
                   dashboard
-        </Button> :<PopupForm />}
+        </Button> :<PopupForm loginRef={parentRef}/>}
       </List>
     </Box>
   );
@@ -80,7 +85,7 @@ function DrawerAppBar(props) {
       <AppBar component="nav" style={{ background: '#fff' }}>
         <Toolbar>
           <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' }, color: "black" }}
+            sx={{ mr: 2,display: { sm: 'none' },color: "black" }}
           > 
              <MenuIcon />
           </IconButton>
@@ -98,7 +103,7 @@ function DrawerAppBar(props) {
               ))}
               {isLoggedin ? <Button onClick={() => navigate("/dashboard")} sx={{ color: 'white', ml: '35px', backgroundColor: 'rgba(126, 28, 254, 1)', fontWeight: '400', fontSize: '15px' }}>
                   dashboard
-                </Button> :<PopupForm />}
+                </Button> :<PopupForm loginRef={parentRef}/>}
             </Box>
           </ThemeProvider>
         </Toolbar>

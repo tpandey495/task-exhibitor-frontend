@@ -52,6 +52,10 @@
     margin:20px;
 }
 
+ .registration-error{
+    color:red;
+}
+
 /* LoginwithGoogle Button Style */
 .registration-form .long-button{
    margin-top:20px;

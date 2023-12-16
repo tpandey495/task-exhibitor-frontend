@@ -15,13 +15,17 @@ const initialState = {
   users: [],
   user: user,
   isLoggedin: user ? true : false,
+  loginOpen:false,
   error: null,
   loading: false,
   registration: {
     loading: false,
     error: null,
   },
-  loginOpen:false,
+  forgetPassword:{
+   forgetPassPopup:false,
+   error:false,
+  }
 };
 
 export const loginUser = createAsyncThunk(
@@ -78,6 +82,14 @@ const userSlice = createSlice({
     },
     LoginpopHandle:(state,action)=>{
       state.loginOpen=!state.loginOpen;
+    },
+    forgetPasswordpopupHandle:(state,action)=>{
+       state.forgetPassword.forgetPassPopup=true;
+       state.loginOpen=true;
+    },
+    GoBacktoLogin:(state,action)=>{
+      state.forgetPassword.forgetPassPopup=false;
+      state.loginOpen=true;
     }
   },
   extraReducers: {
@@ -110,16 +122,16 @@ const userSlice = createSlice({
       state.registration.error = null;
     },
     [RegisterUser.fulfilled]: (state, action) => {
-      console.log(action);
+      state.registration.error=action.payload.message;
       state.registration.loading = false;
     },
     [RegisterUser.rejected]: (state, action) => {
       state.registration.loading = false;
-      state.registration.error = action.payload;
+      state.registration.error = action.payload.message;
     },
   },
 });
 
-export const { setToken, logout,LoginpopHandle } = userSlice.actions;
+export const { setToken, logout,LoginpopHandle,forgetPasswordpopupHandle,GoBacktoLogin} = userSlice.actions;
 export const userReducer = userSlice.reducer;
 export default userReducer;
