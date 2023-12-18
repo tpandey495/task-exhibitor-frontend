@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from 'store/authSlice';
 import Button from '../Shared/Button';
 import Input from '../Shared/Input';
 import LoginwithGoogle from '../LoginwithGoogle';
-import { LoginpopHandle, forgetPasswordpopupHandle,GoBacktoLogin} from 'store/authSlice';
+import {loginUser,LoginpopHandle, forgetpassPopOpen} from 'store/authSlice';
 import './login.css';
+import  ForgetPasswordPopup  from './ForgetPassword';
 
-const PopupForm = ({loginRef}) => {
+
+const PopupForm = ({ loginRef }) => {
+  const { isLoggedin, loginOpen, error, forgetPassword } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [logininfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
-  const { isLoggedin, loginOpen, error,forgetPassword} = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  
   //Login using email id and password logic
   const handleInput = (e) => {
     const name = e.target.name;
@@ -38,50 +40,40 @@ const PopupForm = ({loginRef}) => {
   };
 
   const handleForgetPass = (e) => {
-    dispatch(forgetPasswordpopupHandle());
-  }
-  
-  const forgetPasswordAPI=()=>{
-     console.log("forgetPasswrodAPI");
-  }
-
-  const BacktoLogin=()=>{
-    dispatch(GoBacktoLogin());
+    dispatch(forgetpassPopOpen());
   }
 
   return (
     <>
-      <Button className="open-btn" id="login-open" onClick={togglePopup} children="Login" />
-      {loginOpen && (
+    <Button className="open-btn" id="login-open" onClick={togglePopup} children="Login" />
+    {loginOpen && (
+      !forgetPassword.forgetPassPopup ? (
         <div className="popup" id="login-content" ref={loginRef}>
           <div className="popup-content">
-            <h2>{!forgetPassword?.forgetPassPopup ? "Login" : "Reset Password"}</h2>
-            {error && <p id="login-contnet">{error}</p>}
-            <form onSubmit={handleSubmit}>  
+            <h2>Login</h2>
+            {error && <p id="login-content">{error}</p>}
+            <form onSubmit={handleSubmit}>
               <label htmlFor="email">Email:</label>
               <Input type="email" autoComplete='off' value={logininfo.email}
-                onChange={handleInput} name='email'  width="270px" required />
-              {!forgetPassword?.forgetPassPopup?<>
-                <label htmlFor="password">Password:</label>
-                <Input type='password' autoComplete='off' value={logininfo.password}
-                  onChange={handleInput} name='password'  width="270px" required />
-                <p className='forget-link' onClick={handleForgetPass}>forget password?</p>
-                <LoginwithGoogle />
-                <Link className='forget-link' to="/registration" id="registration-redirect" onClick={togglePopup}>Signup</Link>
-              </>:
-               <p className="back-login" onClick={BacktoLogin}>Go Back to Login</p>
-              }
+                onChange={handleInput} name='email' width="270px" required />
+              <label htmlFor="password">Password:</label>
+              <Input type='password' autoComplete='off' value={logininfo.password}
+                onChange={handleInput} name='password' width="270px" required />
+              <p className='forget-link' onClick={handleForgetPass}>forget password?</p>
+              <LoginwithGoogle />
+              <Link className='forget-link' to="/registration" id="registration-redirect" onClick={togglePopup}>Signup</Link>
               <div className='button-section'>
                 <Button onClick={togglePopup} children="Close" backgroundColor="#bdbcbc" height="40px" />
-                {!forgetPassword?.forgetPassPopup ? <Button type="submit"  onClick={handleSubmit} chidren="Submit" height="40px" children="Submit" /> :
-                  <Button type="submit"  onClick={forgetPasswordAPI} chidren="Submit" height="40px" children="Submit" />
-                }
+                <Button type="submit" onClick={handleSubmit} children="Submit" height="40px" />
               </div>
             </form>
           </div>
         </div>
-      )}
-    </>
+      ) : (
+        <ForgetPasswordPopup />
+      ) 
+    )}
+  </>
   );
 };
 

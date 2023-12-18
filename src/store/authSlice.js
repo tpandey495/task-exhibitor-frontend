@@ -5,7 +5,7 @@ import jwtDecode from "jwt-decode";
 const USER_LOGIN = "user/login";
 const USER_INFO = "user/fetchInfo";
 const USER_REG = "user/userreg";
-
+const forgetAPI = "user/forgetpassword";
 let user = JSON.parse(localStorage.getItem("user"));
 if (user) {
   user = jwtDecode(user);
@@ -15,16 +15,17 @@ const initialState = {
   users: [],
   user: user,
   isLoggedin: user ? true : false,
-  loginOpen:false,
+  loginOpen: false,
   error: null,
   loading: false,
   registration: {
     loading: false,
     error: null,
   },
-  forgetPassword:{
-   forgetPassPopup:false,
-   error:false,
+  forgetPassword: {
+    loading: false,
+    forgetPassPopup: false,
+    error: false,
   }
 };
 
@@ -56,11 +57,21 @@ export const RegisterUser = createAsyncThunk(
   USER_REG,
   async (payload, { rejectWithValue }) => {
     try {
-      console.log("payload");
-      const responseData = await fetchAndProcesd("users/signup", "POST",payload);
+      const responseData = await fetchAndProcesd("users/signup", "POST", payload);
       return responseData;
     } catch (error) {
       throw rejectWithValue(error || "An error occurred while making the request");
+    }
+  }
+);
+
+export const forgetPasswordAPI=createAsyncThunk(
+  forgetAPI, async (payload, { rejectWithValue }) => {
+    try {
+      const responseData = await fetchAndProcesd("/users/reset-link", "POST", payload);
+      return responseData;
+    } catch (error) {
+      throw rejectWithValue(error || "An error occurred while making the request")
     }
   }
 );
@@ -80,16 +91,16 @@ const userSlice = createSlice({
       state.user = null;
       state.users = [];
     },
-    LoginpopHandle:(state,action)=>{
-      state.loginOpen=!state.loginOpen;
+    LoginpopHandle: (state, action) => {
+      state.loginOpen = !state.loginOpen;
     },
-    forgetPasswordpopupHandle:(state,action)=>{
-       state.forgetPassword.forgetPassPopup=true;
-       state.loginOpen=true;
+    forgetpassPopOpen: (state, action) => {
+      state.forgetPassword.forgetPassPopup = true;
+      state.loginOpen = true;
     },
-    GoBacktoLogin:(state,action)=>{
-      state.forgetPassword.forgetPassPopup=false;
-      state.loginOpen=true;
+    GoBacktoLogin: (state, action) => {
+      state.forgetPassword.forgetPassPopup = false;
+      state.loginOpen = true;
     }
   },
   extraReducers: {
@@ -122,16 +133,28 @@ const userSlice = createSlice({
       state.registration.error = null;
     },
     [RegisterUser.fulfilled]: (state, action) => {
-      state.registration.error=action.payload.message;
+      state.registration.error = action.payload.message;
       state.registration.loading = false;
     },
     [RegisterUser.rejected]: (state, action) => {
       state.registration.loading = false;
       state.registration.error = action.payload.message;
     },
+    [forgetPasswordAPI.pending]: (state) => {
+      state.forgetPassword.loading = true;
+      state.forgetPassword.error = null;
+    },
+    [forgetPasswordAPI.fulfilled]: (state, action) => {
+      state.forgetPassword.error = action.payload.message;
+      state.forgetPassword.loading = false;
+    },
+    [forgetPasswordAPI.rejected]: (state, action) => {
+      state.forgetPassword.loading = false;
+      state.forgetPassword.error = action.payload.message;
+    },
   },
 });
 
-export const { setToken, logout,LoginpopHandle,forgetPasswordpopupHandle,GoBacktoLogin} = userSlice.actions;
+export const { setToken, logout, LoginpopHandle,forgetpassPopOpen,GoBacktoLogin} = userSlice.actions;
 export const userReducer = userSlice.reducer;
 export default userReducer;
