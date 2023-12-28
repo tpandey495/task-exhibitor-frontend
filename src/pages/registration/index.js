@@ -45,9 +45,11 @@ const Registration = () => {
         <h1>Unlock Your Free Account. We're Beyond Basic To-Do List and Project Management Apps.</h1>
         <div className="register-features">
           <RegisterFeatures placeholder="Prioritize Tasks Based On Importance and Urgency" />
-          <RegisterFeatures placeholder="Boost productivity; track daily hours"/>
-          <RegisterFeatures placeholder="Heatmap Chart to track Consistency" />
           <RegisterFeatures placeholder="Advanced Personality Evaluation Algorithm"/>
+          <RegisterFeatures placeholder="Heatmap Chart to track Consistency" />
+          <RegisterFeatures placeholder="Boost productivity; track daily hours"/>
+          <RegisterFeatures placeholder="Receive Personalized Reminders"/>       
+          <RegisterFeatures placeholder="Sync with Calendar"/>   
         </div>
       </div>
       <div className="registration-form">
