@@ -1,37 +1,24 @@
-import React, {useEffect } from 'react';
+import React, { useEffect } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import ReactTooltip from 'react-tooltip';
-import {useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import 'react-calendar-heatmap/dist/styles.css';
+import { fetchConsistency } from 'store/progressSlice';
 import './heatmap.css';
-import {fetchConsistency} from 'store/progressSlice';
-
 
 const Heatmap = () => {
-  const {heatmapdata}=useSelector((state)=>state.progress);
-  const dispatch=useDispatch();
-  const getConsistency =async() => {
-    try {
-    if(heatmapdata.length<=0)
-     await dispatch(fetchConsistency());
-    }
-    catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    getConsistency();
-  }, [])
-
-  const dates=[];
+  const { heatmapdata } = useSelector((state) => state.progress);
+  const dispatch = useDispatch();
+  const dates = [];
   const date = new Date();
   const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   // one before to current date
   const prevyear = `${date.getFullYear() - 1}-${date.getMonth()}-${date.getDate()}`;
-
+  useEffect(() => {
+    dispatch(fetchConsistency());
+  }, [])
   return (
-    <div style={{ marginLeft: "16%", marginTop: "5%" }}>
+    <div className="heatmap">
       <CalendarHeatmap
         startDate={prevyear}
         endDate={today}
