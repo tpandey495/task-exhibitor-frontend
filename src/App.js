@@ -16,6 +16,7 @@ import Taskpage from './pages/taskpage/Index';
 import Quiz from './pages/pdequestions/index';
 import Upcoming from './pages/upcoming';
 import Today from './pages/today';
+import Test from 'pages/test/Index';
 import store from 'store/store';
 
 
@@ -39,6 +40,7 @@ function App() {
               <Route path='quiz' element={<Quiz/>} />
               <Route path='upcoming' element={<Upcoming/>} />
               <Route path='today' element={<Today/>} />
+              <Route path='test' element={<Test/>} />
           </Route>
       </Routes>
   </Provider>
