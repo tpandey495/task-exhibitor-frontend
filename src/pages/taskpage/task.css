@@ -1,10 +1,40 @@
+/* ---------- Task Drawer --------- */
+.taskDrawerContainer{
+    /* border: 2px solid red; */
+    width: 450px;
+}
+.drawerheader{
+    border-bottom:2px solid #e7e7e7;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+.drawerheadername{
+    font-size: 20px;
+    color: #656565;
+    font-weight: 500;
+}
+.drawerclosebutton{
+    font-size: 20px;
+    color: #5883f3;
+    cursor: pointer;
+}
+.drawerbodycontainer{
+    border: 2px solid red;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+/* -------------------- */
 .task-group{
     width:100%;
     margin-top:150px;
     margin-bottom:100px;
 }
 
-/*user-welcome*/
 .plan-name{
     display:flex;
     justify-content:space-around;
@@ -17,7 +47,6 @@
     font-weight:200;
 }
 
-/* addTask button */
  .addTask{
     cursor: pointer;
     height: 38px;
