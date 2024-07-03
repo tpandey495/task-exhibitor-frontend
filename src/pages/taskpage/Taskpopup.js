@@ -127,74 +127,38 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
-// import List from "@mui/material/List";
-// import Divider from "@mui/material/Divider";
-// import ListItem from "@mui/material/ListItem";
-// import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
-// import InboxIcon from "@mui/icons-material/MoveToInbox";
-// import MailIcon from "@mui/icons-material/Mail";
 import TextField from "@mui/material/TextField";
+import { Stack, Typography } from "@mui/material";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import "./task.css";
-import { Typography } from "@mui/material";
-// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 function ResponsiveDialog() {
+  // ======== drawer logic ==========
   const [open, setOpen] = React.useState(false);
-
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
 
-  // const DrawerList = (
-  //   <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-  //     <List>
-  //       {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-  //         <ListItem key={text} disablePadding>
-  //           <ListItemButton>
-  //             <ListItemIcon>
-  //               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-  //             </ListItemIcon>
-  //             <ListItemText primary={text} />
-  //           </ListItemButton>
-  //         </ListItem>
-  //       ))}
-  //     </List>
-  //     <Divider />
-  //     <List>
-  //       {['All mail', 'Trash', 'Spam'].map((text, index) => (
-  //         <ListItem key={text} disablePadding>
-  //           <ListItemButton>
-  //             <ListItemIcon>
-  //               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-  //             </ListItemIcon>
-  //             <ListItemText primary={text} />
-  //           </ListItemButton>
-  //         </ListItem>
-  //       ))}
-  //     </List>
-  //   </Box>
-  // );
-
   return (
-    <div>
-      <Button onClick={toggleDrawer(true)}>Add Task</Button>
+    <>
+      <Button variant="contained" onClick={toggleDrawer(true)}>Add Task</Button>
       <Drawer open={open} onClose={toggleDrawer(false)} anchor={"right"}>
-        <div className="taskDrawerContainer">
+        <Box className="taskDrawerContainer">
           <Box className="drawerheader">
-            <p className="drawerheadername">Add Task</p>
-            <p className="drawerclosebutton" onClick={toggleDrawer(false)}>
-              Close
-            </p>
+            <Box className="drawerheadername">Add Task</Box>
+            <Box className="drawerclosebutton" onClick={toggleDrawer(false)}>Close</Box>
           </Box>
           <Box className="drawerbodycontainer">
             <Box>
               <Typography variant="body1">Add Task</Typography>
               <TextField
+                fullWidth
                 variant="outlined"
                 placeholder="Make a cup of coffee"
               />
@@ -202,28 +166,59 @@ function ResponsiveDialog() {
             <Box>
               <Typography variant="body1">Description</Typography>
               <TextField
+                fullWidth
                 variant="outlined"
                 multiline
                 rows={4}
                 placeholder="Add sugar and coffee in cup"
               />
             </Box>
+            <Box sx={{display:'flex', justifyContent: 'space-between', gap:'30px'}}>
+              <Box>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Typography variant="body1">Start Date</Typography>
+                  <DatePicker />
+                </LocalizationProvider>
+              </Box>  
+              <Box>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Typography variant="body1">Start Time</Typography>
+                  <TimePicker label="00:00"/>
+                </LocalizationProvider>
+              </Box>  
+            </Box>
+            <Box sx={{display:'flex', justifyContent: 'space-between', gap:'30px'}}>
+              <Box>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Typography variant="body1">End Date</Typography>
+                  <DatePicker />
+                </LocalizationProvider>
+              </Box>  
+              <Box>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Typography variant="body1">End Time</Typography>
+                  <TimePicker label="00:00"/>
+                </LocalizationProvider>
+              </Box>  
+            </Box>
             <Box>
-              {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DatePicker"]}>
-                  <DatePicker label="Start Date" />
-                </DemoContainer>
-              </LocalizationProvider>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DatePicker"]}>
-                  <DatePicker label="End Date" />
-                </DemoContainer>
-              </LocalizationProvider> */}
+              <Typography variant="body1">Select Priority</Typography>
+              <FormControl fullWidth>
+                <Select>
+                  <MenuItem>Most Urgent</MenuItem>
+                  <MenuItem>Urgent</MenuItem>
+                  <MenuItem>Less Urgent</MenuItem>
+                </Select>
+              </FormControl>
             </Box>
           </Box>
-        </div>
+          <Stack spacing={2} direction="row" sx={{padding: '20px'}}>
+            <Button variant="contained">Add Task</Button>
+            <Button variant="outlined" onClick={toggleDrawer(false)}>Cancel</Button>
+          </Stack>
+        </Box>
       </Drawer>
-    </div>
+    </>
   );
 }
 
