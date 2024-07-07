@@ -16,6 +16,7 @@ const TaskPage =() => {
     }
     const fetchTask=async()=>{
       try{
+        console.log(payload);
         await dispatch(getTaskByPlan(payload));
       }
       catch(err){
