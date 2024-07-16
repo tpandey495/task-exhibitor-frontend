@@ -9,11 +9,17 @@ import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import Stack from '@mui/material/Stack';
 import { useDispatch } from 'react-redux';
-import './Card.css';
+import DrawerLayout from "component/Drawer";
+import CustomTextField from "component/TextField";
+import BottomNavbar from "component/BottomNavbar";
+import useDrawer from "hooks/useDrawer";
 import {fetchPlan,createPlan} from 'store/planSlice';
+import './Card.css';
 
 const Text = styled.h5``;
 const ResponsiveDialog = () => {
+  const { anchor, toggleDrawer } = useDrawer();
+
   const [open, setOpen] = useState(false);
   const [plan, setPlan] = useState({
     planName: "", desc: ""
@@ -29,8 +35,10 @@ const ResponsiveDialog = () => {
     setOpen(false);
   };
   const handleInput = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    // const name = e.target.name;
+    // const value = e.target.value;
+    const {name , value} = e.target;
+    console.log("Name : ",name , "Value : ",value);
     setPlan({ ...plan, [name]: value })
   }
   const { planName, desc } = plan;
@@ -50,10 +58,52 @@ const ResponsiveDialog = () => {
       setErr(err);
     }
   }
+
+  const DrawerBody = () => {
+    return (
+      <Box className="taskDrawerContainer">
+        <Box className="drawerbodycontainer">
+          <Box>
+            <CustomTextField
+              fullWidth
+              label="Plan Name"
+              placeholder="Plan Name"
+              name='planName'
+              value={plan.plan} 
+              onChange={handleInput}
+              required
+            />
+          </Box>
+          <Box>
+            <CustomTextField
+              fullWidth
+              multiline
+              rows={4}
+              label="Description"
+              placeholder="Description"
+              name='desc' 
+              value={plan.desc}
+              onChange={handleInput}
+            />
+          </Box>
+        </Box>
+      </Box>
+    );
+  };
+  const DrawerBottom = () => {
+    return (
+      <Stack spacing={2} direction="row" sx={{ paddingLeft: "10px" }}>
+        <Button variant="contained" onClick={()=>console.log("Newly Added Plan : " , plan)} >Add Plan</Button>
+        <Button variant="outlined" onClick={toggleDrawer(false)}>
+          Cancel
+        </Button>
+      </Stack>
+    );
+  };
   return (
     <div>
-      <button className="addPlan" onClick={handleClickOpen}>Add Plan</button>
-      <Dialog open={open} onClose={handleClose}>
+      <button className="addPlan" onClick={toggleDrawer("right", true)}>Add Plan</button>
+      {/* <Dialog open={open} onClose={handleClose}>
         {err && <div className="err">{err}</div>}
         <DialogTitle >{"Planning"}</DialogTitle>
         <DialogContent>
@@ -81,7 +131,15 @@ const ResponsiveDialog = () => {
             </DialogActions>
           </Box  >
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
+      <DrawerLayout
+        Title="Planning"
+        direction={"right"}
+        anchor={anchor}
+        toggleDrawer={toggleDrawer}
+        Body={<DrawerBody nextBtnText={"Add Task"} />}
+        Bottom={<BottomNavbar Bottom={<DrawerBottom />} />}
+      />
     </div>
   );
 }
