@@ -30,7 +30,7 @@ const Header = () => {
               evaluations.
             </p>
             <Button type="text" className="header-btn" onClick={startHandle} children="start"
-              backgroundColor="rgb(126, 28, 254)" width="150px" height="40px" />
+              backgroundColor="rgb(126, 28, 254)" width="150px" height="40px"></Button>
           </div>
         </div>
         <div className="header-video">

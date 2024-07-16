@@ -71,7 +71,7 @@ const TaskCard=(props)=>{
             <button className="complete" onClick={handleComplete}></button>
             {isEditable?<input type="text" name="task_name" value={edittask.task_name} onChange={handleInput} />:<span>{name}</span>}
            </div>
-            {show==id&&  <div className="task-icons">
+            {show===id&&  <div className="task-icons">
               <AiOutlineEdit size="20px" onClick={()=>setIsEditable(true)}/>
               <span><SlOptionsVertical/></span>
             </div>}

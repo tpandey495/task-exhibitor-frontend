@@ -22,7 +22,7 @@ const Login = () => {
     }
   return (
     <>
-       <Button type="button" className='long-button' onClick={LoginwithGoogle} children="Login with Google" width="270px" />
+       <Button type="button" className='long-button' onClick={LoginwithGoogle} children="Login with Google" width="270px"></Button>
     </>
   )
 }
