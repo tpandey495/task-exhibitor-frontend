@@ -1,4 +1,4 @@
-import react,{useState} from 'react';
+import React,{useState} from 'react';
 import {AiOutlineEdit} from 'react-icons/ai';
 import {SlOptionsVertical} from 'react-icons/sl';
 import {useDispatch} from 'react-redux';
@@ -42,6 +42,7 @@ const TaskCard=(props)=>{
 
     const dispatch=useDispatch();
     const handleSubmit=async(e)=>{
+      e.preventDefault();
       try{
         await  dispatch(updateTask(edittask));
           await dispatch(getTaskByPlan(plan_id));

@@ -29,25 +29,44 @@ const AddTask = () => {
   const { anchor, toggleDrawer } = useDrawer();
 
   const [task, setTask] = useState({
-    plan_id: id,
-    task_name: "",
-    date: "",
-    timing: "",
-    is_daily_task: false,
+    planID: id,
+    taskName: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    priority: "",
+    isDailyTask: false,
   });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log("Name : " ,name , "Value : ", value);
+    setTask((prevTask) => ({
+      ...prevTask,
+      [name]: value,
+    }));
+  };
+
+  function getInput(e){
+    const {name , value} = e.target;
+    console.log(e);
+    console.log("Name :" ,name , "Value :", value);
+  }
 
   const handleSave = async (e) => {
     e.preventDefault();
     try {
       const payload = {
-        plan_id: id,
+        planID: id,
       };
       await dispatch(createTask(task));
       await dispatch(getTaskByPlan(payload));
       await dispatch(gettaskbyfilter("today"));
       await dispatch(gettaskbyfilter("upcoming"));
       await dispatch(fetchPlan());
-      if (task?.is_daily_task) await dispatch(gettaskbyfilter("daily"));
+      if (task?.isDailyTask) await dispatch(gettaskbyfilter("daily"));
     } catch (err) {
       console.error(err);
     }
@@ -57,13 +76,19 @@ const AddTask = () => {
     return (
       <Box className="taskDrawerContainer">
         <Box className="drawerbodycontainer">
-          <Box>
+          {/* <Box>
             <CustomTextField
               fullWidth
               label="Add Task"
               placeholder="Make a cup of coffee"
+              name="taskName"
+              value={task.taskName}
+              onChange={getInput}
             />
-          </Box>
+          </Box> */}
+          <input placeholder="Random" name="taskName"
+              value={task.taskName}
+              onChange={getInput} />
           <Box>
             <CustomTextField
               fullWidth
@@ -71,6 +96,9 @@ const AddTask = () => {
               rows={4}
               label="Description"
               placeholder="Add sugar and coffee in cup"
+              name="description"
+              value={task.description}
+              onChange={handleChange}
             />
           </Box>
           <Box
@@ -81,10 +109,20 @@ const AddTask = () => {
             }}
           >
             <Box>
-              <DateComponent label="Start Date" />
+              <DateComponent
+                label="Start Date"
+                name="startDate"
+                value={task.startDate}
+                onChange={(newDate) => setTask({ ...task, startDate: newDate })}
+              />
             </Box>
             <Box>
-              <DateComponent label="End Date" />
+              <DateComponent
+                label="End Date"
+                name="endDate"
+                value={task.endDate}
+                onChange={(newDate) => setTask({ ...task, endDate: newDate })}
+              />
             </Box>
           </Box>
           <Box
@@ -95,19 +133,33 @@ const AddTask = () => {
             }}
           >
             <Box>
-              <ParamTime label="Start Time" />
+              <ParamTime
+                label="Start Time"
+                name="startTime"
+                value={task.startTime}
+                onChange={(newTime) => setTask({ ...task, startTime: newTime })}
+              />
             </Box>
             <Box>
-              <ParamTime label="End Time" />
+              <ParamTime
+                label="End Time"
+                name="endTime"
+                value={task.endTime}
+                onChange={(newTime) => setTask({ ...task, endTime: newTime })}
+              />
             </Box>
           </Box>
           <Box>
             <Typography variant="body1">Select Priority</Typography>
             <FormControl fullWidth>
-              <Select>
-                <MenuItem>Most Urgent</MenuItem>
-                <MenuItem>Urgent</MenuItem>
-                <MenuItem>Less Urgent</MenuItem>
+              <Select
+                name="priority"
+                value={task.priority}
+                onChange={handleChange}
+              >
+                <MenuItem value="Most Urgent">Most Urgent</MenuItem>
+                <MenuItem value="Urgent">Urgent</MenuItem>
+                <MenuItem value="Less Urgent">Less Urgent</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -119,7 +171,9 @@ const AddTask = () => {
   const DrawerBottom = () => {
     return (
       <Stack spacing={2} direction="row" sx={{ paddingLeft: "10px" }}>
-        <Button variant="contained">Add Task</Button>
+        <Button variant="contained" onClick={handleSave}>
+          Add Task
+        </Button>
         <Button variant="outlined" onClick={toggleDrawer(false)}>
           Cancel
         </Button>
