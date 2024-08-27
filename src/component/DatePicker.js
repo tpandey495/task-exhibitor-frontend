@@ -5,6 +5,9 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 
 const  DateComponent=({label, name="",value, onChange,className="",customStyle={},id="", inputRef = null, disabled,error,helperText})=>{
+  const handleChange=(newDate)=>{
+    onChange({target:{name:name,value:newDate}})
+  }
   const selectedDate = value ? dayjs(value) : null;
     return (
         <>
@@ -16,7 +19,7 @@ const  DateComponent=({label, name="",value, onChange,className="",customStyle={
               value={selectedDate}
               disabled={disabled}
               sx={customStyle}
-              onChange={onChange}
+              onChange={handleChange}
               className={className}
               slotProps={{ textField: { variant: 'outlined',name:name, inputRef: inputRef, error:error, helperText:helperText} }}
             />
