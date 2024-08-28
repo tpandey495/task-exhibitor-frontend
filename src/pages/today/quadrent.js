@@ -6,7 +6,6 @@ const Quadrent = () => {
   return (
     <Box sx={{padding: '1rem 2rem', position: 'relative'}}>
         <Box className="centerbox">
-            
         </Box>
         <Box className="quadrentsparentbox">
             <Box className="quadrentbox quadrentbox1"><Box className="head head1">SAYS</Box></Box>
