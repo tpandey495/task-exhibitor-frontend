@@ -43,8 +43,8 @@ const DrawerBody = ({setTask,task, handleChange }) => {
             fullWidth
             label="Add Task"
             placeholder="Make a cup of coffee"
-            name="taskName"
-            value={task.taskName}
+            name="task_name"
+            value={task.task_name}
             onChange={handleChange}
           />
         </Box>
@@ -70,17 +70,17 @@ const DrawerBody = ({setTask,task, handleChange }) => {
           <Box>
             <DateComponent
               label="Start Date"
-              name="startDate"
-              value={task.startDate}
+              name="start_date"
+              value={task.start_date}
               onChange={handleChange}
             />
           </Box>
           <Box>
             <DateComponent
               label="End Date"
-              name="endDate"
-              value={task.endDate}
-              onChange={(newDate) => setTask({ ...task, endDate: newDate })}
+              name="end_date"
+              value={task.end_date}
+              onChange={(newDate) => setTask({ ...task, end_date: newDate })}
             />
           </Box>
         </Box>
@@ -94,17 +94,17 @@ const DrawerBody = ({setTask,task, handleChange }) => {
           <Box>
             <ParamTime
               label="Start Time"
-              name="startTime"
-              value={task.startTime}
-              onChange={(newTime) => setTask({ ...task, startTime: newTime })}
+              name="start_time"
+              value={task.start_time}
+              onChange={(newTime) => setTask({ ...task, start_time: newTime })}
             />
           </Box>
           <Box>
             <ParamTime
               label="End Time"
-              name="endTime"
-              value={task.endTime}
-              onChange={(newTime) => setTask({ ...task, endTime: newTime })}
+              name="end_time"
+              value={task.end_time}
+              onChange={(newTime) => setTask({ ...task, end_time: newTime })}
             />
           </Box>
         </Box>
@@ -134,16 +134,17 @@ const AddTask = () => {
   const { anchor, toggleDrawer } = useDrawer();
 
   const [task, setTask] = useState({
-    planID: id,
-    taskName: "",
+    plan_id: id,
+    task_name: "",
     description: "",
-    startDate: "",
-    endDate: "",
-    startTime: "",
-    endTime: "",
+    start_date: "",
+    end_date: "",
+    start_time: "",
+    end_time: "",
     priority: "",
-    isDailyTask: false,
-  });
+    is_daily_task: false,
+});
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -158,14 +159,14 @@ const AddTask = () => {
     e.preventDefault();
     try {
       const payload = {
-        planID: id,
+        taskNaplan_idme: id,
       };
       await dispatch(createTask(task));
       await dispatch(getTaskByPlan(payload));
       await dispatch(gettaskbyfilter("today"));
       await dispatch(gettaskbyfilter("upcoming"));
       await dispatch(fetchPlan());
-      if (task?.isDailyTask) await dispatch(gettaskbyfilter("daily"));
+      if (task?.is_daily_task) await dispatch(gettaskbyfilter("daily"));
     } catch (err) {
       console.error(err);
     }
@@ -182,7 +183,7 @@ const AddTask = () => {
         direction={"right"}
         anchor={anchor}
         toggleDrawer={toggleDrawer}
-        Body={<DrawerBody task={task} handleChange={handleChange} />}
+        Body={<DrawerBody task={task} handleChange={handleChange} setTask={setTask} />}
         Bottom={<BottomNavbar Bottom={<DrawerBottom handleSave={handleSave} setTask={setTask} toggleDrawer={toggleDrawer} nextBtnText={"Add Task"} />} />}
       />
     </>
